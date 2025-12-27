@@ -20,6 +20,7 @@ import { renderMenuItem } from "./menus";
 import { NavbarProps } from "./interfaces";
 import { data } from "./data";
 import { ToggleThemeButton } from "../ui/toggle-theme";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 const Navbar = ({
   menu = data.menu,
   logo = data.logo,
@@ -46,12 +47,22 @@ const Navbar = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
-              <a href={auth!.login.url}>{auth!.login.title}</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href={auth!.signup.url}>{auth!.signup.title}</a>
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button variant="outline" size="sm" disabled>
+                  {auth!.login.title}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>This feature is current disabled</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button size="sm" disabled>
+                  {auth!.signup.title}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>This feature is current disabled</TooltipContent>
+            </Tooltip>
           </div>
         </nav>
 
@@ -94,10 +105,10 @@ const Navbar = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
+                    <Button asChild variant="outline" disabled>
                       <a href={auth!.login.url}>{auth!.login.title}</a>
                     </Button>
-                    <Button asChild>
+                    <Button asChild disabled>
                       <a href={auth!.signup.url}>{auth!.signup.title}</a>
                     </Button>
                   </div>
