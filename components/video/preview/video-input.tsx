@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/file-upload";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
-import { Activity, useCallback } from "react";
+import { Activity, useCallback, useEffect, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -24,6 +24,8 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import Image from "next/image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export function VideoInput() {
   const form = useForm<FileValues>({
@@ -33,15 +35,43 @@ export function VideoInput() {
     },
   });
 
+  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
   const onSubmit = useCallback((data: FileValues) => {
     data.file.map((file) => {
       console.log(file.name);
     });
   }, []);
 
+  const renderThumbnail = (): void => {
+    const file = form.getValues("file")[0];
+    const videoUrl = URL.createObjectURL(file);
+    const video = document.createElement("video");
+    const canvas = document.createElement("canvas");
+    video.src = videoUrl;
+    video.onloadedmetadata = () => {
+      video.currentTime = 35;
+    };
+
+    video.onseeked = () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const image = canvas.toDataURL("image/jpeg", 1);
+        setThumbnail(image);
+      }
+      URL.revokeObjectURL(videoUrl);
+    };
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full h-full" id="video-form">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full h-full"
+        id="video-form"
+      >
         <FormField
           control={form.control}
           name="file"
@@ -52,7 +82,10 @@ export function VideoInput() {
                   disabled={form.getValues("file").length > 0}
                   className="h-full"
                   value={field.value}
-                  onValueChange={field.onChange}
+                  onValueChange={(file) => {
+                    field.onChange(file);
+                    renderThumbnail();
+                  }}
                   accept="video/mp4"
                   maxFiles={1}
                   maxSize={200 * 1024 * 1024}
@@ -63,41 +96,52 @@ export function VideoInput() {
                   }}
                   multiple={false}
                 >
-                  <FileUploadDropzone className="h-full">
-                    <div className="flex flex-col gap-2 items-center">
-                      <div className="flex flex-col items-center gap-1 h-full">
-                        <div className="flex items-center justify-center rounded-full border p-2.5">
-                          <Upload className="size-6 text-muted-foreground" />
+                  <Activity mode={thumbnail ? "hidden" : "visible"}>
+                    <FileUploadDropzone className="h-full">
+                      <div className="flex flex-col gap-2 items-center">
+                        <div className="flex flex-col items-center gap-1 h-full">
+                          <div className="flex items-center justify-center rounded-full border p-2.5">
+                            <Upload className="size-6 text-muted-foreground" />
+                          </div>
+                          <p className="font-medium text-sm">
+                            Drag & drop your video here
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            Or click below to browse (up to 200MB max size)
+                          </p>
                         </div>
-                        <p className="font-medium text-sm">
-                          Drag & drop your video here
-                        </p>
-                        <p className="text-muted-foreground text-xs">
-                          Or click below to browse (up to 200MB max size)
-                        </p>
+                        <FileUploadTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="mt-2 w-fit"
+                          >
+                            Browse files
+                          </Button>
+                        </FileUploadTrigger>
                       </div>
-                      <FileUploadTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mt-2 w-fit"
-                        >
-                          Browse files
-                        </Button>
-                      </FileUploadTrigger>
+                    </FileUploadDropzone>
+                  </Activity>
+                  <Activity mode={thumbnail ? "visible" : "hidden"}>
+                    <div className="relative h-full w-full">
+                      <Image
+                        className="rounded-md"
+                        src={thumbnail!}
+                        alt="thumbnail"
+                        fill
+                      />
                     </div>
-                  </FileUploadDropzone>
-
+                  </Activity>
                   <FileUploadList>
                     {field.value?.map((file, index) => (
                       <FileUploadItem key={index} value={file}>
-                        <FileUploadItemPreview />
                         <FileUploadItemMetadata />
                         <FileUploadItemDelete asChild>
                           <Button
                             variant="ghost"
                             size="icon"
                             className="size-7"
+                            onClick={() => setThumbnail(undefined)}
                           >
                             <X />
                             <span className="sr-only">Delete</span>
@@ -108,7 +152,6 @@ export function VideoInput() {
                   </FileUploadList>
                 </FileUpload>
               </FormControl>
-              
             </FormItem>
           )}
         />

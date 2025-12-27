@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen w-full">
       <Navbar />
-      <div className="flex px-48 w-full h-4/6 gap-6">
+      <div className="flex px-48 w-full h-5/6 gap-6">
         <VideoCard />
         <Preview />
       </div>

@@ -26,7 +26,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="py-1.5 px-3 rounded-md"
+        className="py-1.5 px-3 rounded-md font-medium"
       >
         {item.title}
       </NavigationMenuLink>

@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/empty";
 import { ArrowUpRightIcon, Folder, Video } from "lucide-react";
 import { VideoInput } from "./video-input";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export function Preview() {
   return (
-    <Card className="w-full">
+    <Card className="w-full h-full">
       <CardHeader>
         <CardTitle>Video upload</CardTitle>
         <CardDescription>
