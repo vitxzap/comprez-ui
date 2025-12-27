@@ -33,7 +33,9 @@ export function Options() {
           </SelectContent>
         </Select>
       </div>
-      <Button variant={"default"}>Compress file</Button>
+      <Button variant={"default"} type="submit" form="video-form">
+        Compress file
+      </Button>
     </div>
   );
 }

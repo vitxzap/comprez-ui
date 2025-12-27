@@ -48,16 +48,16 @@ const Navbar = ({
           </div>
           <div className="flex gap-2">
             <Tooltip>
-              <TooltipTrigger>
-                <Button variant="outline" size="sm" disabled>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm">
                   {auth!.login.title}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>This feature is current disabled</TooltipContent>
             </Tooltip>
             <Tooltip>
-              <TooltipTrigger>
-                <Button size="sm" disabled>
+              <TooltipTrigger asChild>
+                <Button size="sm">
                   {auth!.signup.title}
                 </Button>
               </TooltipTrigger>

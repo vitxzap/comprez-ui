@@ -15,28 +15,19 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { ArrowUpRightIcon, Folder, Video } from "lucide-react";
+import { VideoInput } from "./video-input";
 
 export function Preview() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Video preview</CardTitle>
+        <CardTitle>Video upload</CardTitle>
         <CardDescription>
-          View your before/after compressed file.
+          Use the input below to upload your video.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Video />
-            </EmptyMedia>
-            <EmptyTitle>Preview is under construction</EmptyTitle>
-            <EmptyDescription>
-              This card still under construction and will be finish very soon
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
+      <CardContent className="h-full">
+        <VideoInput />
       </CardContent>
     </Card>
   );
