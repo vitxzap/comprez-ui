@@ -9,8 +9,6 @@ import {
   FileUploadItem,
   FileUploadItemDelete,
   FileUploadItemMetadata,
-  FileUploadItemPreview,
-  FileUploadItemProgress,
   FileUploadList,
   FileUploadTrigger,
 } from "@/components/ui/file-upload";
@@ -23,9 +21,9 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import Image from "next/image";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export function VideoInput() {
   const form = useForm<FileValues>({
@@ -35,34 +33,39 @@ export function VideoInput() {
     },
   });
 
-  const [thumbnail, setThumbnail] = useState<string | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
+
   const onSubmit = useCallback((data: FileValues) => {
     data.file.map((file) => {
       console.log(file.name);
     });
   }, []);
 
-  const renderThumbnail = (): void => {
-    const file = form.getValues("file")[0];
-    const videoUrl = URL.createObjectURL(file);
-    const video = document.createElement("video");
-    const canvas = document.createElement("canvas");
-    video.src = videoUrl;
-    video.onloadedmetadata = () => {
-      video.currentTime = 35;
-    };
+  const renderThumbnail = (file: FileValues["file"]): void => {
+    console.log(file);
+    if (file.length > 0) {
+      const uploadedVideo = file[0];
+      const videoUrl = URL.createObjectURL(uploadedVideo);
+      const video = document.createElement("video");
+      const canvas = document.createElement("canvas");
+      video.src = videoUrl;
+      video.onloadedmetadata = () => {
+        video.currentTime = 35;
+      };
 
-    video.onseeked = () => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const image = canvas.toDataURL("image/jpeg", 1);
-        setThumbnail(image);
-      }
-      URL.revokeObjectURL(videoUrl);
-    };
+      video.onseeked = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const image = canvas.toDataURL("image/jpeg", 1);
+          setThumbnail(image);
+        }
+        URL.revokeObjectURL(videoUrl);
+      };
+    }
+    console.log(thumbnail);
   };
 
   return (
@@ -84,7 +87,7 @@ export function VideoInput() {
                   value={field.value}
                   onValueChange={(file) => {
                     field.onChange(file);
-                    renderThumbnail();
+                    renderThumbnail(file);
                   }}
                   accept="video/mp4"
                   maxFiles={1}
@@ -122,7 +125,8 @@ export function VideoInput() {
                       </div>
                     </FileUploadDropzone>
                   </Activity>
-                  <Activity mode={thumbnail ? "visible" : "hidden"}>
+
+                  {thumbnail ? (
                     <div className="relative h-full w-full">
                       <Image
                         className="rounded-md"
@@ -131,7 +135,10 @@ export function VideoInput() {
                         fill
                       />
                     </div>
-                  </Activity>
+                  ) : (
+                    ""
+                  )}
+
                   <FileUploadList>
                     {field.value?.map((file, index) => (
                       <FileUploadItem key={index} value={file}>
@@ -141,7 +148,7 @@ export function VideoInput() {
                             variant="ghost"
                             size="icon"
                             className="size-7"
-                            onClick={() => setThumbnail(undefined)}
+                            onClick={() => setThumbnail(null)}
                           >
                             <X />
                             <span className="sr-only">Delete</span>
@@ -152,6 +159,7 @@ export function VideoInput() {
                   </FileUploadList>
                 </FileUpload>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

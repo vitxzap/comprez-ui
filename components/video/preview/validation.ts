@@ -2,7 +2,11 @@ import z from "zod";
 z.config(z.locales.pt());
 const fileSchema = z.object({
   file: z
-    .array(z.file().min(10_480).max(209_715_200).mime("video/mp4"))
+    .array(z.file())
+    .refine((files) => files.every((file) => file.size <= 5 * 1024 * 1024), {
+      message: "File size must be less than 5MB",
+      path: ["files"],
+    })
     .max(1)
     .min(1),
 });
