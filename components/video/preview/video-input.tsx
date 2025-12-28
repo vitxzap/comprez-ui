@@ -24,6 +24,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Image from "next/image";
+import {
+  CompareSlider,
+  CompareSliderAfter,
+  CompareSliderBefore,
+  CompareSliderHandle,
+} from "@/components/ui/compare-slider";
 
 export function VideoInput() {
   const form = useForm<FileValues>({
@@ -34,7 +40,9 @@ export function VideoInput() {
   });
 
   const [thumbnail, setThumbnail] = useState<string | null>(null);
-
+  const [compressedThumbnail, setCompressedThumbnail] = useState<string | null>(
+    null
+  );
   const onSubmit = useCallback((data: FileValues) => {
     data.file.map((file) => {
       console.log(file.name);
@@ -60,7 +68,9 @@ export function VideoInput() {
         if (ctx) {
           ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
           const image = canvas.toDataURL("image/jpeg", 1);
+          const compressedImage = canvas.toDataURL("image/jpeg", 0.5);
           setThumbnail(image);
+          setCompressedThumbnail(compressedImage);
         }
         URL.revokeObjectURL(videoUrl);
       };
@@ -128,12 +138,28 @@ export function VideoInput() {
 
                   {thumbnail ? (
                     <div className="relative h-full w-full">
-                      <Image
-                        className="rounded-md"
-                        src={thumbnail!}
-                        alt="thumbnail"
-                        fill
-                      />
+                      <CompareSlider
+                        defaultValue={50}
+                        className="w-full h-full"
+                      >
+                        <CompareSliderBefore className="relative h-full w-full">
+                          <Image
+                            className="rounded-md"
+                            src={compressedThumbnail!}
+                            alt="thumbnail compressed"
+                            fill
+                          />
+                        </CompareSliderBefore>
+                        <CompareSliderAfter>
+                          <Image
+                            className="rounded-md"
+                            src={thumbnail!}
+                            alt="thumbnail"
+                            fill
+                          />
+                        </CompareSliderAfter>
+                        <CompareSliderHandle />
+                      </CompareSlider>
                     </div>
                   ) : (
                     ""

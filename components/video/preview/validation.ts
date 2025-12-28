@@ -8,7 +8,7 @@ const fileSchema = z.object({
       path: ["files"],
     })
     .max(1)
-    .min(1),
+    .min(1, { error: "You must provide at least 1 file to continue." }),
 });
 type FileValues = z.infer<typeof fileSchema>;
 
