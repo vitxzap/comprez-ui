@@ -4,7 +4,7 @@ const fileSchema = z.object({
   file: z
     .array(z.file())
     .refine((files) => files.every((file) => file.size <= 5 * 1024 * 1024), {
-      message: "File size must be less than 5MB",
+      message: "File size must be more than 5MB",
       path: ["files"],
     })
     .max(1)
