@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { fileSchema, FileValues } from "./validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,7 +14,14 @@ import {
 } from "@/components/ui/file-upload";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
-import { Activity, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Activity,
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 import {
   Form,
   FormControl,
@@ -30,6 +37,7 @@ import {
   CompareSliderBefore,
   CompareSliderHandle,
 } from "@/components/ui/compare-slider";
+import { useVideoStore } from "./video-store";
 
 export function VideoInput() {
   const form = useForm<FileValues>({
@@ -41,8 +49,10 @@ export function VideoInput() {
 
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [compressedThumbnail, setCompressedThumbnail] = useState<string | null>(
-    null
+    null,
   );
+  const { update } = useVideoStore();
+  const values = useWatch({ control: form.control, name: ["file"] });
   const onSubmit = useCallback((data: FileValues) => {
     data.file.map((file) => {
       console.log(file.name);
@@ -50,7 +60,6 @@ export function VideoInput() {
   }, []);
 
   const renderThumbnail = (file: FileValues["file"]): void => {
-    console.log(file);
     if (file.length > 0) {
       const uploadedVideo = file[0];
       const videoUrl = URL.createObjectURL(uploadedVideo);
@@ -75,9 +84,11 @@ export function VideoInput() {
         URL.revokeObjectURL(videoUrl);
       };
     }
-    console.log(thumbnail);
   };
-
+  useEffect(() => {
+    console.log(!!form.getValues("file").length);
+    update(!!form.getValues("file").length);
+  }, [values]);
   return (
     <Form {...form}>
       <form
@@ -89,7 +100,7 @@ export function VideoInput() {
           control={form.control}
           name="file"
           render={({ field }) => (
-            <FormItem className="h-full">
+            <FormItem className="h-full flex flex-1 flex-col">
               <FormControl className="h-full">
                 <FileUpload
                   disabled={form.getValues("file").length > 0}
@@ -174,7 +185,10 @@ export function VideoInput() {
                             variant="ghost"
                             size="icon"
                             className="size-7"
-                            onClick={() => setThumbnail(null)}
+                            onClick={() => {
+                              form.clearErrors();
+                              setThumbnail(null);
+                            }}
                           >
                             <X />
                             <span className="sr-only">Delete</span>
