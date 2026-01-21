@@ -1,7 +1,6 @@
 "use client";
-import { useForm, useWatch } from "react-hook-form";
-import { fileSchema, FileValues } from "./validation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { FileValues } from "../validation";
 import {
   FileUpload,
   FileUploadClear,
@@ -14,20 +13,12 @@ import {
 } from "@/components/ui/file-upload";
 import { Button } from "@/components/ui/button";
 import { Upload, X } from "lucide-react";
-import {
-  Activity,
-  useCallback,
-  useEffect,
-  useEffectEvent,
-  useRef,
-  useState,
-} from "react";
+import { Activity, useState } from "react";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import Image from "next/image";
@@ -37,28 +28,14 @@ import {
   CompareSliderBefore,
   CompareSliderHandle,
 } from "@/components/ui/compare-slider";
-import { useVideoStore } from "./video-store";
+import { Field, FieldError } from "@/components/ui/field";
 
 export function VideoInput() {
-  const form = useForm<FileValues>({
-    resolver: zodResolver(fileSchema),
-    defaultValues: {
-      file: [],
-    },
-  });
-
+  const form = useFormContext<FileValues>();
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [compressedThumbnail, setCompressedThumbnail] = useState<string | null>(
     null,
   );
-  const { update } = useVideoStore();
-  const values = useWatch({ control: form.control, name: ["file"] });
-  const onSubmit = useCallback((data: FileValues) => {
-    data.file.map((file) => {
-      console.log(file.name);
-    });
-  }, []);
-
   const renderThumbnail = (file: FileValues["file"]): void => {
     if (file.length > 0) {
       const uploadedVideo = file[0];
@@ -80,130 +57,117 @@ export function VideoInput() {
           const compressedImage = canvas.toDataURL("image/jpeg", 0.5);
           setThumbnail(image);
           setCompressedThumbnail(compressedImage);
+          URL.revokeObjectURL(videoUrl);
         }
-        URL.revokeObjectURL(videoUrl);
       };
     }
   };
-  useEffect(() => {
-    console.log(!!form.getValues("file").length);
-    update(!!form.getValues("file").length);
-  }, [values]);
+
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full h-full"
-        id="video-form"
-      >
-        <FormField
-          control={form.control}
-          name="file"
-          render={({ field }) => (
-            <FormItem className="h-full flex flex-1 flex-col">
-              <FormControl className="h-full">
-                <FileUpload
-                  disabled={form.getValues("file").length > 0}
-                  className="h-full"
-                  value={field.value}
-                  onValueChange={(file) => {
-                    field.onChange(file);
-                    renderThumbnail(file);
-                  }}
-                  accept="video/mp4"
-                  maxFiles={1}
-                  maxSize={200 * 1024 * 1024}
-                  onFileReject={(_, message) => {
-                    form.setError("file", {
-                      message,
-                    });
-                  }}
-                  multiple={false}
-                >
-                  <Activity mode={thumbnail ? "hidden" : "visible"}>
-                    <FileUploadDropzone className="h-full">
-                      <div className="flex flex-col gap-2 items-center">
-                        <div className="flex flex-col items-center gap-1 h-full">
-                          <div className="flex items-center justify-center rounded-full border p-2.5">
-                            <Upload className="size-6 text-muted-foreground" />
-                          </div>
-                          <p className="font-medium text-sm">
-                            Drag & drop your video here
-                          </p>
-                          <p className="text-muted-foreground text-xs">
-                            Or click below to browse (up to 200MB max size)
-                          </p>
-                        </div>
-                        <FileUploadTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="mt-2 w-fit"
-                          >
-                            Browse files
-                          </Button>
-                        </FileUploadTrigger>
+    <div className="h-full flex flex-1 flex-col">
+      <Controller
+        control={form.control}
+        name="file"
+        render={({ field, fieldState }) => (
+          <Field className="flex flex-col flex-1">
+            <FileUpload
+              disabled={form.getValues("file").length > 0}
+              className="h-full"
+              value={field.value}
+              onValueChange={(file) => {
+                field.onChange(file);
+                renderThumbnail(file);
+              }}
+              accept="video/mp4"
+              maxFiles={1}
+              invalid={fieldState.invalid}
+              maxSize={200 * 1024 * 1024}
+              onFileReject={(_, message) => {
+                form.setError("file", {
+                  message,
+                });
+              }}
+              multiple={false}
+            >
+              <Activity mode={thumbnail ? "hidden" : "visible"}>
+                <FileUploadDropzone className="h-full">
+                  <div className="flex flex-col gap-2 items-center">
+                    <div className="flex flex-col items-center gap-1 h-full">
+                      <div className="flex items-center justify-center rounded-full border p-2.5">
+                        <Upload className="size-6 text-muted-foreground" />
                       </div>
-                    </FileUploadDropzone>
-                  </Activity>
-
-                  {thumbnail ? (
-                    <div className="relative h-full w-full">
-                      <CompareSlider
-                        defaultValue={50}
-                        className="w-full h-full"
-                      >
-                        <CompareSliderBefore className="relative h-full w-full">
-                          <Image
-                            className="rounded-md"
-                            src={compressedThumbnail!}
-                            alt="thumbnail compressed"
-                            fill
-                          />
-                        </CompareSliderBefore>
-                        <CompareSliderAfter>
-                          <Image
-                            className="rounded-md"
-                            src={thumbnail!}
-                            alt="thumbnail"
-                            fill
-                          />
-                        </CompareSliderAfter>
-                        <CompareSliderHandle />
-                      </CompareSlider>
+                      <p className="font-medium text-sm">
+                        Drag & drop your video here
+                      </p>
+                      <p className="text-muted-foreground text-xs">
+                        Or click below to browse (up to 200MB max size)
+                      </p>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                    <FileUploadTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2 w-fit"
+                      >
+                        Browse files
+                      </Button>
+                    </FileUploadTrigger>
+                  </div>
+                </FileUploadDropzone>
+              </Activity>
 
-                  <FileUploadList>
-                    {field.value?.map((file, index) => (
-                      <FileUploadItem key={index} value={file}>
-                        <FileUploadItemMetadata />
-                        <FileUploadItemDelete asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-7"
-                            onClick={() => {
-                              form.clearErrors();
-                              setThumbnail(null);
-                            }}
-                          >
-                            <X />
-                            <span className="sr-only">Delete</span>
-                          </Button>
-                        </FileUploadItemDelete>
-                      </FileUploadItem>
-                    ))}
-                  </FileUploadList>
-                </FileUpload>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+              {thumbnail ? (
+                <div className="relative h-full w-full">
+                  <CompareSlider defaultValue={50} className="w-full h-full">
+                    <CompareSliderBefore className="relative h-full w-full">
+                      <Image
+                        className="rounded-md"
+                        src={compressedThumbnail!}
+                        alt="thumbnail compressed"
+                        fill
+                      />
+                    </CompareSliderBefore>
+                    <CompareSliderAfter>
+                      <Image
+                        className="rounded-md"
+                        src={thumbnail!}
+                        alt="thumbnail"
+                        fill
+                      />
+                    </CompareSliderAfter>
+                    <CompareSliderHandle />
+                  </CompareSlider>
+                </div>
+              ) : (
+                ""
+              )}
+
+              <FileUploadList>
+                {field.value?.map((file, index) => (
+                  <FileUploadItem key={index} value={file}>
+                    <FileUploadItemMetadata />
+                    <FileUploadItemDelete asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-7"
+                        onClick={() => {
+                          form.clearErrors();
+                          setThumbnail(null);
+                        }}
+                      >
+                        <X />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </FileUploadItemDelete>
+                  </FileUploadItem>
+                ))}
+              </FileUploadList>
+            </FileUpload>
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+    </div>
   );
 }

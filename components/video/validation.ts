@@ -1,14 +1,12 @@
 import z from "zod";
-z.config(z.locales.pt());
 const fileSchema = z.object({
   file: z
     .array(z.file())
-    .refine((files) => files.every((file) => file.size <= 5 * 1024 * 1024), {
-      message: "File size must be more than 5MB",
-      path: ["files"],
-    })
     .max(1)
     .min(1, { error: "You must provide at least 1 file to continue." }),
+  preset: z.enum(["very high", "high", "medium", "low", "very low"], {
+    error: "You must select a preset to continue.",
+  }),
 });
 type FileValues = z.infer<typeof fileSchema>;
 

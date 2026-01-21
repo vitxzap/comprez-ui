@@ -10,7 +10,7 @@ export function VideoCard() {
   return (
     <Card className="h-full min-w-sm">
       <CardHeader>
-        <CardTitle>Video Options</CardTitle>
+        <CardTitle>Options</CardTitle>
         <CardDescription>Manage your video options right here.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col h-full">

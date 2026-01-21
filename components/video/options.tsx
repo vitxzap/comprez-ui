@@ -1,8 +1,5 @@
 "use client";
-import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { RainbowButton } from "../ui/rainbow-button";
 import {
   Select,
   SelectContent,
@@ -12,44 +9,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useVideoStore } from "./preview/video-store";
-import { Field, FieldDescription, FieldLabel, FieldLegend } from "../ui/field";
-
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
+import { Controller, useFormContext } from "react-hook-form";
+import { FileValues } from "./validation";
 export function Options() {
-  const { isReady } = useVideoStore();
+  const { control, formState, getValues, getFieldState } =
+    useFormContext<FileValues>();
   return (
     <div className="flex flex-col gap-4 h-full justify-between">
       <div className="flex flex-col gap-3 ">
-        <Field>
-          <FieldLabel>Presets</FieldLabel>
-          <FieldDescription>
-            Higher values means more compression.
-          </FieldDescription>
-          <Select>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select the compress level preset" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Presets</SelectLabel>
-                <SelectItem value="very_high">Very High</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">low</SelectItem>
-                <SelectItem value="very_low">Very low</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </Field>
+        <Controller
+          control={control}
+          name="preset"
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel>Presets</FieldLabel>
+              <FieldDescription>
+                Higher values means more compression.
+              </FieldDescription>
+
+              <Select
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
+                <SelectTrigger
+                  className="w-full"
+                  aria-invalid={fieldState.invalid}
+                >
+                  <SelectValue placeholder="Select the compress level preset" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectGroup>
+                    <SelectLabel>Presets</SelectLabel>
+                    <SelectItem value="very high">Very High</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="very low">Very low</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
       </div>
-      <Button
-        variant={"default"}
-        type="submit"
-        form="video-form"
-        disabled={!isReady}
-      >
-        Compress file
-      </Button>
+      <Button type="submit">Compress file</Button>
     </div>
   );
 }
