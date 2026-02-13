@@ -1,35 +1,41 @@
 "use client";
 import { Navbar } from "@/components/navbar/navbar";
-import { VideoCard } from "@/components/video/card";
-import { Options } from "@/components/video/options";
-import { Preview } from "@/components/video/preview/card";
-import { fileSchema, FileValues } from "@/components/video/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+} from "@/components/ui/select";
+import UploadDropzone from "@/components/upload/upload.dropzone";
 
 export default function Home() {
-  const methods = useForm<FileValues>({
-    resolver: zodResolver(fileSchema),
-    defaultValues: {
-      file: [],
-    },
-  });
-  const onSubmit = (data: any) => console.log(data)
   return (
-    <div className="flex flex-col h-screen w-full">
+    <div className="flex flex-col min-h-full w-full gap-6">
       <Navbar />
-      <div className="flex px-48 w-full h-5/6">
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="flex w-full gap-6"
-            name="video"
-          >
-            <VideoCard />
-            <Preview />
-          </form>
-        </FormProvider>
+      <div className="flex flex-col h-full items-center gap-4">
+        <Card className="w-1/2 h-10/12">
+          <CardContent>
+            <UploadDropzone />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
