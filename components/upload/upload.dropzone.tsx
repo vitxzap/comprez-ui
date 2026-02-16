@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -35,21 +35,35 @@ export default function UploadDropzone() {
   );
   const renderThumbnail = (file: File): void => {
     if (file) {
+      // Create an object based on file
       const videoUrl = URL.createObjectURL(file);
+
+      //Creates useful objects
       const video = document.createElement("video");
       const canvas = document.createElement("canvas");
+
+      //Defines videoUrl as video source
       video.src = videoUrl;
+
+      // Event that set the frame that will be displayed in the preview
       video.onloadedmetadata = () => {
         video.currentTime = 35;
       };
+
+      //When the video is seeked
       video.onseeked = () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d");
         if (ctx) {
+          //Draw the frame (35 defined by previous event)
           ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
           const image = canvas.toDataURL("image/jpeg", 1);
+
+          //Creates the compressed preview
           const compressedImage = canvas.toDataURL("image/jpeg", 0.5);
+
+          //Setting variables and cleaning memory
           setPreview(image);
           setCompressedPreview(compressedImage);
           URL.revokeObjectURL(videoUrl);
@@ -57,6 +71,10 @@ export default function UploadDropzone() {
       };
     }
   };
+  function cleanPreviewStates() {
+    setPreview(null);
+    setCompressedPreview(null);
+  }
   function onFileReject(file: File, message: string) {
     console.log("file rejected", message);
   }
@@ -147,15 +165,19 @@ export default function UploadDropzone() {
             variant="ghost"
             size="icon"
             className="size-7"
-            onClick={() => {
-              setPreview(null);
-            }}
+            onClick={cleanPreviewStates}
           >
             <X />
             <span className="sr-only">Delete</span>
           </Button>
         </FileUploadItemDelete>
-        <Button>Compress</Button>
+        <Button
+          onClick={() => {
+            console.log(file);
+          }}
+        >
+          Compress
+        </Button>
       </FileUploadItem>
     </FileUpload>
   );
