@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FileUpload,
   FileUploadDropzone,
@@ -9,7 +9,7 @@ import {
   FileUploadItemMetadata,
   FileUploadTrigger,
 } from "../ui/file-upload";
-import { EyeOff, Plus, Upload, X } from "lucide-react";
+import { EllipsisVertical, EyeOff, Plus, Upload, X } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Empty,
@@ -26,6 +26,8 @@ import {
   CompareSliderBefore,
   CompareSliderHandle,
 } from "../ui/compare-slider";
+import { Options } from "./options";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export default function UploadDropzone() {
   const [file, setFile] = useState<File[]>([]);
@@ -163,15 +165,18 @@ export default function UploadDropzone() {
         <FileUploadItemDelete asChild>
           <Button
             variant="ghost"
-            size="icon"
-            className="size-7"
+            size="icon-sm"
+            className="text-destructive hover:text-destructive hover:bg-destructive/50!"
             onClick={cleanPreviewStates}
           >
             <X />
             <span className="sr-only">Delete</span>
           </Button>
         </FileUploadItemDelete>
+        <Options />
+        
         <Button
+          disabled
           onClick={() => {
             console.log(file);
           }}
