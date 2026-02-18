@@ -1,9 +1,6 @@
 "use client";
 import { Navbar } from "@/components/navbar/navbar";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import UploadDropzone from "@/components/upload/upload.dropzone";
 
 export default function Home() {

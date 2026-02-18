@@ -9,7 +9,14 @@ import {
   FileUploadItemMetadata,
   FileUploadTrigger,
 } from "../ui/file-upload";
-import { EllipsisVertical, EyeOff, Plus, Upload, X } from "lucide-react";
+import {
+  EllipsisVertical,
+  EyeOff,
+  Plus,
+  Trash2Icon,
+  Upload,
+  X,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Empty,
@@ -26,8 +33,19 @@ import {
   CompareSliderBefore,
   CompareSliderHandle,
 } from "../ui/compare-slider";
-import { Options } from "./options";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Options } from "./options/options";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 export default function UploadDropzone() {
   const [file, setFile] = useState<File[]>([]);
@@ -162,19 +180,41 @@ export default function UploadDropzone() {
       ) : undefined}
       <FileUploadItem value={file[0]}>
         <FileUploadItemMetadata />
-        <FileUploadItemDelete asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="text-destructive hover:text-destructive hover:bg-destructive/50!"
-            onClick={cleanPreviewStates}
-          >
-            <X />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </FileUploadItemDelete>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="text-destructive hover:text-destructive hover:bg-destructive/50!"
+            >
+              <X />
+              <span className="sr-only">Delete</span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent size="sm">
+            <AlertDialogHeader>
+              <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                <Trash2Icon />
+              </AlertDialogMedia>
+              <AlertDialogTitle>Remove file?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will remove your current file from upload, all options will
+                be lost.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
+              <FileUploadItemDelete asChild onClick={cleanPreviewStates}>
+                <AlertDialogAction variant="destructive">
+                  Delete
+                </AlertDialogAction>
+              </FileUploadItemDelete>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <Options />
-        
+
         <Button
           disabled
           onClick={() => {

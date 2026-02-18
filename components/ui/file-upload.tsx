@@ -1,7 +1,5 @@
 "use client";
 
-import { Slot as SlotPrimitive } from "radix-ui";
-import { useDirection } from "@radix-ui/react-direction";
 import {
   FileArchiveIcon,
   FileAudioIcon,
@@ -11,6 +9,10 @@ import {
   FileTextIcon,
   FileVideoIcon,
 } from "lucide-react";
+import {
+  Direction as DirectionPrimitive,
+  Slot as SlotPrimitive,
+} from "radix-ui";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useAsRef } from "@/hooks/use-as-ref";
@@ -177,10 +179,8 @@ function useFileUploadContext(consumerName: string) {
   return context;
 }
 
-interface FileUploadProps extends Omit<
-  React.ComponentProps<"div">,
-  "defaultValue" | "onChange"
-> {
+interface FileUploadProps
+  extends Omit<React.ComponentProps<"div">, "defaultValue" | "onChange"> {
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
@@ -240,7 +240,7 @@ function FileUpload(props: FileUploadProps) {
   const listId = React.useId();
   const labelId = React.useId();
 
-  const dir = useDirection(dirProp);
+  const dir = DirectionPrimitive.useDirection(dirProp);
   const listeners = useLazyRef(() => new Set<() => void>()).current;
   const files = useLazyRef<Map<File, FileState>>(() => new Map()).current;
   const urlCache = useLazyRef(() => new WeakMap<File, string>()).current;
@@ -1107,7 +1107,7 @@ function FileUploadItemPreview(props: FileUploadItemPreviewProps) {
       data-slot="file-upload-preview"
       {...previewProps}
       className={cn(
-        "relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded border bg-accent/50 [&>svg]:size-6",
+        "relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded border bg-accent/50 [&>svg]:size-10",
         className,
       )}
     >

@@ -1,15 +1,6 @@
 import { EllipsisVertical } from "lucide-react";
-import { Button } from "../ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
-} from "../ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { useState } from "react";
+import { Button } from "../../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
+import BasicForm from "./form";
 
 export function Options() {
   return (
@@ -35,9 +27,10 @@ export function Options() {
         </Tooltip>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Title</DialogTitle>
-            <DialogDescription>Description</DialogDescription>
+            <DialogTitle>Compression options</DialogTitle>
+            <DialogDescription>Choose the best options for you!</DialogDescription>
           </DialogHeader>
+          <BasicForm />
         </DialogContent>
       </Dialog>
     </div>
