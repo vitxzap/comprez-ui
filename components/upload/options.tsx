@@ -10,28 +10,36 @@ import {
 } from "../ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export function Options() {
   return (
     <div>
-      <Popover>
+      <Dialog>
         <Tooltip>
           <TooltipTrigger asChild>
-            <PopoverTrigger asChild>
+            <DialogTrigger asChild>
               <Button variant={"ghost"} size={"icon-sm"}>
                 <EllipsisVertical />
               </Button>
-            </PopoverTrigger>
+            </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent side="top">Compression options</TooltipContent>
         </Tooltip>
-        <PopoverContent>
-          <PopoverHeader>
-            <PopoverTitle>Title</PopoverTitle>
-            <PopoverDescription>Description</PopoverDescription>
-          </PopoverHeader>
-        </PopoverContent>
-      </Popover>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Title</DialogTitle>
+            <DialogDescription>Description</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
