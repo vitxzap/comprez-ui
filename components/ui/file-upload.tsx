@@ -1,7 +1,7 @@
 "use client";
 
-import { useDirection, Slot as SlotPrimitive } from "radix-ui";
-
+import { Slot as SlotPrimitive } from "radix-ui";
+import { useDirection } from "@radix-ui/react-direction";
 import {
   FileArchiveIcon,
   FileAudioIcon,
@@ -177,8 +177,10 @@ function useFileUploadContext(consumerName: string) {
   return context;
 }
 
-interface FileUploadProps
-  extends Omit<React.ComponentProps<"div">, "defaultValue" | "onChange"> {
+interface FileUploadProps extends Omit<
+  React.ComponentProps<"div">,
+  "defaultValue" | "onChange"
+> {
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
