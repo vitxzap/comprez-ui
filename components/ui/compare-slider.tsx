@@ -1,6 +1,6 @@
 "use client";
 
-import { Slot as SlotPrimitive } from "radix-ui";
+import * as SlotPrimitive from "@radix-ui/react-slot";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,

@@ -9,10 +9,8 @@ import {
   FileTextIcon,
   FileVideoIcon,
 } from "lucide-react";
-import {
-  Direction as DirectionPrimitive,
-  Slot as SlotPrimitive,
-} from "radix-ui";
+import { DirectionProvider, useDirection } from "@radix-ui/react-direction";
+import * as SlotPrimitive from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useAsRef } from "@/hooks/use-as-ref";
@@ -179,8 +177,10 @@ function useFileUploadContext(consumerName: string) {
   return context;
 }
 
-interface FileUploadProps
-  extends Omit<React.ComponentProps<"div">, "defaultValue" | "onChange"> {
+interface FileUploadProps extends Omit<
+  React.ComponentProps<"div">,
+  "defaultValue" | "onChange"
+> {
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
@@ -240,7 +240,7 @@ function FileUpload(props: FileUploadProps) {
   const listId = React.useId();
   const labelId = React.useId();
 
-  const dir = DirectionPrimitive.useDirection(dirProp);
+  const dir = useDirection(dirProp);
   const listeners = useLazyRef(() => new Set<() => void>()).current;
   const files = useLazyRef<Map<File, FileState>>(() => new Map()).current;
   const urlCache = useLazyRef(() => new WeakMap<File, string>()).current;
