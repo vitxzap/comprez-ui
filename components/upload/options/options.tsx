@@ -11,7 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/dialog";
-import BasicOptions from "./basic.form";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -23,8 +22,12 @@ import {
   type BasicFormType,
   basicSchema,
 } from "./validation";
-import AdvancedOptions from "./advanced.form";
 import SharedSubmitButton from "./submit.button";
+import dynamic from "next/dynamic";
+
+// Using dynamic imports to improve performance
+const AdvancedOptions = dynamic(() => import("./advanced.form"));
+const BasicOptions = dynamic(() => import("./basic.form"));
 
 export function Options() {
   //Toggles between advanced form usage
@@ -54,7 +57,6 @@ export function Options() {
   const activeForm = (
     useAdvancedOptions ? advancedOptions : basicOptions
   ) as UseFormReturn<BasicFormType | AdvancedFormType>;
-
 
   return (
     <div>
@@ -99,7 +101,7 @@ export function Options() {
                   Cancel
                 </Button>
               </DialogClose>
-              <SharedSubmitButton isAdvancedForm={useAdvancedOptions}  />
+              <SharedSubmitButton isAdvancedForm={useAdvancedOptions} />
             </DialogFooter>
           </FormProvider>
         </DialogContent>
