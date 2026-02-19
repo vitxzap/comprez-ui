@@ -100,13 +100,17 @@ export function Options() {
   return (
     <Dialog>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button variant={"ghost"} size={"icon-sm"}>
-              <EllipsisVertical />
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
+        <TooltipTrigger
+          render={
+            <DialogTrigger
+              render={
+                <Button variant={"ghost"} size={"icon-sm"}>
+                  <EllipsisVertical />
+                </Button>
+              }
+            />
+          }
+        ></TooltipTrigger>
         <TooltipContent side="top">Compression options</TooltipContent>
       </Tooltip>
       <DialogContent showCloseButton={false}>
@@ -136,11 +140,13 @@ export function Options() {
             {useAdvancedOptions ? <AdvancedOptions /> : <BasicOptions />}
           </div>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant={"ghost"} className="flex-1">
-                Cancel
-              </Button>
-            </DialogClose>
+            <DialogClose
+              render={
+                <Button variant={"ghost"} className="flex-1">
+                  Cancel
+                </Button>
+              }
+            />
             <SharedSubmitButton isAdvancedForm={useAdvancedOptions} />
           </DialogFooter>
         </FormProvider>

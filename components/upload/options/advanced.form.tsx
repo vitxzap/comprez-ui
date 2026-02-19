@@ -60,7 +60,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Video codec</SelectLabel>
                     {advancedSchema.shape.codecs.shape.video.options.map(
@@ -95,7 +95,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Audio codec</SelectLabel>
                     {advancedSchema.shape.codecs.shape.audio.options.map(
@@ -152,7 +152,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
                     {advancedSchema.shape.outputExt.options.map(

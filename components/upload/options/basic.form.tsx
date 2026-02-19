@@ -44,7 +44,7 @@ export default function BasicOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Presets</SelectLabel>
                     {presets.map((preset, index) => (
@@ -80,7 +80,7 @@ export default function BasicOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent position="popper">
+                <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
                     {outputs.map((output, index) => (

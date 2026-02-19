@@ -48,19 +48,20 @@ const Navbar = ({
           </div>
           <div className="flex gap-2">
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="sm">
-                  {auth!.login.title}
-                </Button>
-              </TooltipTrigger>
+              <TooltipTrigger
+                render={
+                  <Button variant="outline" size="sm">
+                    {auth!.login.title}
+                  </Button>
+                }
+              />
               <TooltipContent>This feature is current disabled</TooltipContent>
             </Tooltip>
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button size="sm">
-                  {auth!.signup.title}
-                </Button>
-              </TooltipTrigger>
+              <TooltipTrigger
+                render={<Button size="sm">{auth!.signup.title}</Button>}
+              />
+
               <TooltipContent>This feature is current disabled</TooltipContent>
             </Tooltip>
           </div>
@@ -78,11 +79,13 @@ const Navbar = ({
               />
             </a>
             <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
+              <SheetTrigger
+                render={
+                  <Button variant="outline" size="icon">
+                    <Menu className="size-4" />
+                  </Button>
+                }
+              />
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
@@ -96,21 +99,23 @@ const Navbar = ({
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-6 p-4">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="flex w-full flex-col gap-4"
-                  >
+                  <Accordion className="flex w-full flex-col gap-4">
                     {menu!.map((item) => renderMobileMenuItem(item))}
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline" disabled>
-                      <a href={auth!.login.url}>{auth!.login.title}</a>
-                    </Button>
-                    <Button asChild disabled>
-                      <a href={auth!.signup.url}>{auth!.signup.title}</a>
-                    </Button>
+                    <Button
+                      render={<a href={auth!.login.url}>{auth!.login.title}</a>}
+                      variant="outline"
+                      disabled
+                    />
+
+                    <Button
+                      render={
+                        <a href={auth!.signup.url}>{auth!.signup.title}</a>
+                      }
+                      disabled
+                    />
                   </div>
                 </div>
               </SheetContent>

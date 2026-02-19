@@ -182,16 +182,18 @@ export default function UploadDropzone() {
         <FileUploadItemMetadata />
 
         <AlertDialog>
-          <AlertDialogTrigger nativeButton={false}>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="text-destructive hover:text-destructive hover:bg-destructive/50!"
-            >
-              <X />
-              <span className="sr-only">Delete</span>
-            </Button>
-          </AlertDialogTrigger>
+          <AlertDialogTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="text-destructive hover:text-destructive hover:bg-destructive/50!"
+              >
+                <X />
+                <span className="sr-only">Delete</span>
+              </Button>
+            }
+          />
           <AlertDialogContent size="sm">
             <AlertDialogHeader>
               <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">

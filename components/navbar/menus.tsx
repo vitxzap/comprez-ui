@@ -13,9 +13,10 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
         <NavigationMenuContent className="bg-popover text-popover-foreground">
           {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title}>
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
+            <NavigationMenuLink
+              render={<SubMenuLink item={subItem} />}
+              key={subItem.title}
+            />
           ))}
         </NavigationMenuContent>
       </NavigationMenuItem>
