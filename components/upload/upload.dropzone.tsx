@@ -46,6 +46,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export default function UploadDropzone() {
   const [file, setFile] = useState<File[]>([]);
@@ -180,41 +181,47 @@ export default function UploadDropzone() {
       ) : undefined}
       <FileUploadItem value={file[0]}>
         <FileUploadItemMetadata />
-
-        <AlertDialog>
-          <AlertDialogTrigger
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="text-destructive hover:text-destructive hover:bg-destructive/50!"
-              >
-                <X />
-                <span className="sr-only">Delete</span>
-              </Button>
-            }
-          />
-          <AlertDialogContent size="sm">
-            <AlertDialogHeader>
-              <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-                <Trash2Icon />
-              </AlertDialogMedia>
-              <AlertDialogTitle>Remove file?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This will remove your current file from upload, all options will
-                be lost.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel variant={"ghost"}>Cancel</AlertDialogCancel>
-              <FileUploadItemDelete asChild onClick={cleanPreviewStates}>
-                <AlertDialogAction variant={"destructive"}>
-                  Delete
-                </AlertDialogAction>
-              </FileUploadItemDelete>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <Tooltip>
+          <AlertDialog>
+            <AlertDialogTrigger
+              render={
+                <TooltipTrigger
+                  render={
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/50!"
+                    >
+                      <X />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  }
+                />
+              }
+            />
+            <AlertDialogContent size="sm">
+              <AlertDialogHeader>
+                <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                  <Trash2Icon />
+                </AlertDialogMedia>
+                <AlertDialogTitle>Remove file?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will remove your current file from upload, all options
+                  will be lost.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel variant={"ghost"}>Cancel</AlertDialogCancel>
+                <FileUploadItemDelete asChild onClick={cleanPreviewStates}>
+                  <AlertDialogAction variant={"destructive"}>
+                    Delete
+                  </AlertDialogAction>
+                </FileUploadItemDelete>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <TooltipContent>Delete file</TooltipContent>
+        </Tooltip>
         <Options />
 
         <Button
