@@ -115,6 +115,32 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.553 0.013 58.071);
 }
+@layer utilities {
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground));
+    border-radius: 999px;
+  }
+
+  /* Espaçamento entre conteúdo e scrollbar */
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    border-right: 4px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
 
 @layer base {
   * {
@@ -124,3 +150,4 @@
     @apply bg-background text-foreground;
   }
 }
+

@@ -24,10 +24,49 @@ import {
 } from "./validation";
 import SharedSubmitButton from "./submit.button";
 import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Using dynamic imports to improve performance
-const AdvancedOptions = dynamic(() => import("./advanced.form"));
-const BasicOptions = dynamic(() => import("./basic.form"));
+const AdvancedOptions = dynamic(() => import("./advanced.form"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex w-full flex-col gap-7">
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+      {Array.from({ length: 3 }).map((_, i, a) => (
+        <div className="flex flex-col gap-3" key={i}>
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      ))}
+      <div className="flex gap-2 w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24 flex-1" />
+      </div>
+    </div>
+  ),
+});
+const BasicOptions = dynamic(() => import("./basic.form"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex w-full flex-col gap-7">
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+      <div className="flex gap-2 w-full">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-24 flex-1" />
+      </div>
+    </div>
+  ),
+});
 
 export function Options() {
   //Toggles between advanced form usage
@@ -59,53 +98,53 @@ export function Options() {
   ) as UseFormReturn<BasicFormType | AdvancedFormType>;
 
   return (
-    <div>
-      <Dialog>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button variant={"ghost"} size={"icon-sm"}>
-                <EllipsisVertical />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent side="top">Compression options</TooltipContent>
-        </Tooltip>
-        <DialogContent showCloseButton={false}>
-          <FormProvider {...activeForm}>
-            <DialogHeader>
-              <div className="flex w-full justify-between items-center">
-                <DialogTitle>Compression options</DialogTitle>
-                <div className="flex gap-2 items-center">
-                  <Label
-                    className="text-xs font-medium"
-                    htmlFor="advanced options"
-                  >
-                    Advanced options
-                  </Label>
-                  <Switch
-                    id="advanced options"
-                    checked={useAdvancedOptions}
-                    onCheckedChange={setUseAdvancedOptiopns}
-                  />
-                </div>
+    <Dialog>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button variant={"ghost"} size={"icon-sm"}>
+              <EllipsisVertical />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="top">Compression options</TooltipContent>
+      </Tooltip>
+      <DialogContent showCloseButton={false}>
+        <FormProvider {...activeForm}>
+          <DialogHeader>
+            <div className="flex w-full justify-between items-center">
+              <DialogTitle>Compression options</DialogTitle>
+              <div className="flex gap-2 items-center">
+                <Label
+                  className="text-xs font-medium"
+                  htmlFor="advanced options"
+                >
+                  Advanced options
+                </Label>
+                <Switch
+                  id="advanced options"
+                  checked={useAdvancedOptions}
+                  onCheckedChange={setUseAdvancedOptiopns}
+                />
               </div>
-              <DialogDescription>
-                Choose the best options for you!
-              </DialogDescription>
-            </DialogHeader>
+            </div>
+            <DialogDescription>
+              Choose the best options for you!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="overflow-y-auto max-h-[45vh] p-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-muted [&::-webkit-scrollbar-thumb]:border [&::-webkit-scrollbar-thumb]:border-background [&::-webkit-scrollbar-thumb]:box-content">
             {useAdvancedOptions ? <AdvancedOptions /> : <BasicOptions />}
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant={"ghost"} className="flex-1">
-                  Cancel
-                </Button>
-              </DialogClose>
-              <SharedSubmitButton isAdvancedForm={useAdvancedOptions} />
-            </DialogFooter>
-          </FormProvider>
-        </DialogContent>
-      </Dialog>
-    </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant={"ghost"} className="flex-1">
+                Cancel
+              </Button>
+            </DialogClose>
+            <SharedSubmitButton isAdvancedForm={useAdvancedOptions} />
+          </DialogFooter>
+        </FormProvider>
+      </DialogContent>
+    </Dialog>
   );
 }

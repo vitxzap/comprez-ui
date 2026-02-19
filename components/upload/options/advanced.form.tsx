@@ -1,3 +1,4 @@
+"use client";
 import { Controller, useFormContext } from "react-hook-form";
 import { AdvancedFormType, advancedSchema } from "./validation";
 import {
@@ -20,7 +21,6 @@ import {
 
 export default function AdvancedOptions() {
   const form = useFormContext<AdvancedFormType>();
-  console.log(form.formState.defaultValues);
   return (
     <form>
       <FieldGroup>
@@ -110,6 +110,26 @@ export default function AdvancedOptions() {
               </Select>
               <FieldDescription>
                 Choose your audio codec, default is AAC.
+              </FieldDescription>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          control={form.control}
+          name="audioBitrate"
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel>Audio Bitrate</FieldLabel>
+              <Input
+                {...form.register("audioBitrate", { valueAsNumber: true })}
+                type="number"
+                placeholder="96"
+                aria-invalid={fieldState.invalid}
+              />
+              <FieldDescription>
+                Choose your audio bitrate. A small number can reduce file size.
+                Choose between 48 and 192. Default is 96.
               </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

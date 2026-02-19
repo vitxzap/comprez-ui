@@ -1,11 +1,11 @@
-import { Controller, useForm, useFormContext } from "react-hook-form";
+"use client";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   Field,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldTitle,
 } from "../../ui/field";
 import {
   Select,
@@ -25,7 +25,6 @@ import {
 
 export default function BasicOptions() {
   const form = useFormContext<BasicFormType>();
-
   return (
     <form>
       <FieldGroup>
