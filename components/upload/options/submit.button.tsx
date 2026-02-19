@@ -11,7 +11,7 @@ export default function SharedSubmitButton({
     if (isAdvancedForm) {
       console.log("advanced form data: ", data);
     } else {
-      console.log("basic form data: ", data);
+      console.log("basic form  data: ", data);
     }
   }
   return (
