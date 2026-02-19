@@ -14,13 +14,10 @@ export const presets = [{
     label: "Low compression"
 }] as const;
 
-export const outputs = ["Same as input", "mp4", "avi", "ogg", "webm"] as const;
-
-
 export const basicSchema = z.object({
     //Stores only the value
     preset: z.enum(presets.map((preset) => preset.value)),
-    outputExt: z.enum(outputs),
+    outputExt: z.enum(["Same as input", "mp4", "avi", "ogg", "webm"]),
 });
 export type BasicFormType = z.infer<typeof basicSchema>;
 

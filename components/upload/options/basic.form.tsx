@@ -16,12 +16,8 @@ import {
   SelectGroup,
   SelectLabel,
 } from "../../ui/select";
-import {
-  type BasicFormType,
-  basicSchema,
-  outputs,
-  presets,
-} from "./validation";
+import { type BasicFormType, basicSchema, presets } from "./validation";
+import { useState } from "react";
 
 export default function BasicOptions() {
   const form = useFormContext<BasicFormType>();
@@ -36,6 +32,7 @@ export default function BasicOptions() {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Preset</FieldLabel>
               <Select
+                items={presets}
                 defaultValue={form.formState.defaultValues?.preset}
                 name={field.name}
                 value={field.value}
@@ -47,8 +44,8 @@ export default function BasicOptions() {
                 <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Presets</SelectLabel>
-                    {presets.map((preset, index) => (
-                      <SelectItem key={index} value={preset.value}>
+                    {presets.map((preset) => (
+                      <SelectItem key={preset.value} value={preset.value}>
                         {preset.label}
                       </SelectItem>
                     ))}
@@ -83,11 +80,13 @@ export default function BasicOptions() {
                 <SelectContent alignItemWithTrigger>
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
-                    {outputs.map((output, index) => (
-                      <SelectItem key={index} value={output}>
-                        {output}
-                      </SelectItem>
-                    ))}
+                    {basicSchema.shape.outputExt.options.map(
+                      (output, index) => (
+                        <SelectItem key={index} value={output}>
+                          {output}
+                        </SelectItem>
+                      ),
+                    )}
                   </SelectGroup>
                 </SelectContent>
               </Select>
