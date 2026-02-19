@@ -1,5 +1,3 @@
-"use client";
-import { Navbar } from "@/components/navbar/navbar";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import UploadDropzone from "@/components/upload/upload.dropzone";

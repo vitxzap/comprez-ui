@@ -182,7 +182,7 @@ export default function UploadDropzone() {
         <FileUploadItemMetadata />
 
         <AlertDialog>
-          <AlertDialogTrigger asChild>
+          <AlertDialogTrigger nativeButton={false}>
             <Button
               variant="ghost"
               size="icon-sm"
@@ -204,9 +204,9 @@ export default function UploadDropzone() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
+              <AlertDialogCancel variant={"ghost"}>Cancel</AlertDialogCancel>
               <FileUploadItemDelete asChild onClick={cleanPreviewStates}>
-                <AlertDialogAction variant="destructive">
+                <AlertDialogAction variant={"destructive"}>
                   Delete
                 </AlertDialogAction>
               </FileUploadItemDelete>
