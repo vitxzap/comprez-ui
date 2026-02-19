@@ -1,5 +1,5 @@
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm, useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Field,
   FieldDescription,
@@ -17,19 +17,16 @@ import {
   SelectGroup,
   SelectLabel,
 } from "../../ui/select";
-import { type BasicForm, formSchema, outputs, presets } from "./validation";
+import {
+  type BasicFormType,
+  basicSchema,
+  outputs,
+  presets,
+} from "./validation";
 
-export default function BasicForm() {
-  const form = useForm<BasicForm>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      preset: "medium",
-      outputType: "Same as input",
-    },
-  });
-  const onSubmit = (payload: BasicForm) => {
-    console.log("input data: " + payload);
-  };
+export default function BasicOptions() {
+  const form = useFormContext<BasicFormType>();
+
   return (
     <form>
       <FieldGroup>
@@ -40,11 +37,16 @@ export default function BasicForm() {
             //Controls the preset field
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Preset</FieldLabel>
-              <Select defaultValue={form.formState.defaultValues?.preset}>
+              <Select
+                defaultValue={form.formState.defaultValues?.preset}
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectGroup>
                     <SelectLabel>Presets</SelectLabel>
                     {presets.map((preset, index) => (
@@ -63,20 +65,24 @@ export default function BasicForm() {
             </Field>
           )}
         />
-
         <Controller
           control={form.control}
-          name="outputType"
+          name="outputExt"
           render={({ field, fieldState }) => (
             // Controls the output format field
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Output extension</FieldLabel>
 
-              <Select defaultValue={form.formState.defaultValues?.outputType}>
+              <Select
+                defaultValue={form.formState.defaultValues?.outputExt}
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
                     {outputs.map((output, index) => (
