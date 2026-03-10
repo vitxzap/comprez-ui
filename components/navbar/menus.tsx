@@ -13,9 +13,10 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
         <NavigationMenuContent className="bg-popover text-popover-foreground">
           {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title}>
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
+            <NavigationMenuLink
+              render={<SubMenuLink item={subItem} />}
+              key={subItem.title}
+            />
           ))}
         </NavigationMenuContent>
       </NavigationMenuItem>
@@ -26,7 +27,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="py-1.5 px-3 rounded-md"
+        className="py-1.5 px-3 rounded-md font-medium"
       >
         {item.title}
       </NavigationMenuLink>

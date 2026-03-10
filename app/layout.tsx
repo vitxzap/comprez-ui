@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Navbar } from "@/components/navbar/navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,13 +26,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="h-dvh w-dvw">
       <body
-        className={`${inter.variable} ${jetBrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${jetBrainsMono.variable} antialiased h-dvh w-dvw`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          
-          {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <div className="flex flex-col w-full h-full">
+              <Navbar />
+              {children}
+            </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
