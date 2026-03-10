@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import UploadDropzone from "@/components/upload/upload.dropzone";
 
