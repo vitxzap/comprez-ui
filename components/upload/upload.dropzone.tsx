@@ -225,7 +225,6 @@ export default function UploadDropzone() {
         <Options />
 
         <Button
-          disabled
           onClick={() => {
             console.log(file);
           }}
