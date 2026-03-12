@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
+    "@flagsmith/flagsmith": "^11.0.0",
     "@hookform/resolvers": "^5.2.2",
     "@hugeicons/core-free-icons": "^3.1.1",
     "@hugeicons/react": "^1.1.5",
