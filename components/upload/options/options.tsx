@@ -1,3 +1,4 @@
+"use client";
 import { EllipsisVertical } from "lucide-react";
 import { Button } from "../../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
@@ -25,6 +26,7 @@ import {
 import SharedSubmitButton from "./submit.button";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFlags } from "@flagsmith/flagsmith/react";
 
 // Using dynamic imports to improve performance
 const AdvancedOptions = dynamic(() => import("./advanced.form"), {
@@ -71,7 +73,8 @@ const BasicOptions = dynamic(() => import("./basic.form"), {
 export function Options() {
   //Toggles between advanced form usage
   const [useAdvancedOptions, setUseAdvancedOptiopns] = useState<boolean>(false);
-
+  const flags = useFlags(["enable_compression_options"]);
+  const isFeatureEnabled = flags.enable_compression_options.enabled;
   const basicOptions = useForm<BasicFormType>({
     resolver: zodResolver(basicSchema),
     defaultValues: {
@@ -104,7 +107,11 @@ export function Options() {
           render={
             <DialogTrigger
               render={
-                <Button variant={"ghost"} size={"icon-sm"}>
+                <Button
+                  variant={"ghost"}
+                  size={"icon-sm"}
+                  disabled={!isFeatureEnabled}
+                >
                   <EllipsisVertical />
                 </Button>
               }
