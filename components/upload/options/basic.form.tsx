@@ -17,8 +17,11 @@ import {
   SelectLabel,
 } from "../../ui/select";
 import { type BasicFormType, basicSchema, presets } from "./validation";
+import { useState } from "react";
+
 
 export default function BasicOptions() {
+  const alignItemsWithTrigger = false
   const form = useFormContext<BasicFormType>();
   return (
     <form>
@@ -40,7 +43,7 @@ export default function BasicOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger>
+                <SelectContent alignItemWithTrigger={alignItemsWithTrigger}>
                   <SelectGroup>
                     <SelectLabel>Presets</SelectLabel>
                     {presets.map((preset) => (
@@ -76,7 +79,7 @@ export default function BasicOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger>
+                <SelectContent alignItemWithTrigger={alignItemsWithTrigger}>
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
                     {basicSchema.shape.outputExt.options.map(

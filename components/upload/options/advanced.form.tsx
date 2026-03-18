@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 export default function AdvancedOptions() {
+  const alignItemsWithTrigger = false
   const form = useFormContext<AdvancedFormType>();
   return (
     <form>
@@ -60,7 +61,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger>
+                <SelectContent alignItemWithTrigger={alignItemsWithTrigger}>
                   <SelectGroup>
                     <SelectLabel>Video codec</SelectLabel>
                     {advancedSchema.shape.codecs.shape.video.options.map(
@@ -95,7 +96,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger>
+                <SelectContent alignItemWithTrigger={alignItemsWithTrigger}>
                   <SelectGroup>
                     <SelectLabel>Audio codec</SelectLabel>
                     {advancedSchema.shape.codecs.shape.audio.options.map(
@@ -152,7 +153,7 @@ export default function AdvancedOptions() {
                 <SelectTrigger aria-invalid={fieldState.invalid}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger>
+                <SelectContent alignItemWithTrigger={alignItemsWithTrigger}>
                   <SelectGroup>
                     <SelectLabel>Extension</SelectLabel>
                     {advancedSchema.shape.outputExt.options.map(
