@@ -17,7 +17,6 @@ import {
   SelectLabel,
 } from "../../ui/select";
 import { type BasicFormType, basicSchema, presets } from "./validation";
-import { useState } from "react";
 
 
 export default function BasicOptions() {
