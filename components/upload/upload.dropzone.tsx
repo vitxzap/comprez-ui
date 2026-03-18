@@ -110,6 +110,7 @@ export default function UploadDropzone() {
       multiple={false}
       maxSize={500 * 1024 * 1024}
       value={file}
+      accept="video/*"
       onValueChange={setFile}
       onFileReject={(_, message) => onFileReject(_, message)}
       onFileAccept={(file) => onFileAccept(file)}
