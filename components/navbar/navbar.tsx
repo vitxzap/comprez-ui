@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Moon, Sun } from "lucide-react";
+import { IconMenu2 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ const Navbar = ({
               <SheetTrigger
                 render={
                   <Button variant="outline" size="icon">
-                    <Menu className="size-4" />
+                    <IconMenu2 className="size-4" />
                   </Button>
                 }
               />

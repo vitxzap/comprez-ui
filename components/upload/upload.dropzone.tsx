@@ -10,13 +10,13 @@ import {
   FileUploadTrigger,
 } from "../ui/file-upload";
 import {
-  EllipsisVertical,
-  EyeOff,
-  Plus,
-  Trash2Icon,
-  Upload,
-  X,
-} from "lucide-react";
+  IconDotsVertical,
+  IconEyeOff,
+  IconPlus,
+  IconTrash,
+  IconUpload,
+  IconX,
+} from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import {
   Empty,
@@ -142,7 +142,7 @@ export default function UploadDropzone() {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Upload />
+                <IconUpload />
               </EmptyMedia>
               <EmptyTitle>Drag and drop file here</EmptyTitle>
               <EmptyDescription>
@@ -157,7 +157,7 @@ export default function UploadDropzone() {
                   className="px-7! py-6! rounded-full"
                   data-icon="inline-start"
                 >
-                  <Plus />
+                  <IconPlus />
                   Choose File
                 </Button>
               </FileUploadTrigger>
@@ -169,7 +169,7 @@ export default function UploadDropzone() {
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant={"icon"}>
-              <EyeOff />
+              <IconEyeOff />
             </EmptyMedia>
             <EmptyTitle>Preview not avaible</EmptyTitle>
             <EmptyDescription>
@@ -192,7 +192,7 @@ export default function UploadDropzone() {
                       size="icon-sm"
                       className="text-destructive hover:text-destructive hover:bg-destructive/50!"
                     >
-                      <X />
+                      <IconX />
                       <span className="sr-only">Delete</span>
                     </Button>
                   }
@@ -202,7 +202,7 @@ export default function UploadDropzone() {
             <AlertDialogContent size="sm">
               <AlertDialogHeader>
                 <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-                  <Trash2Icon />
+                  <IconTrash />
                 </AlertDialogMedia>
                 <AlertDialogTitle>Remove file?</AlertDialogTitle>
                 <AlertDialogDescription>

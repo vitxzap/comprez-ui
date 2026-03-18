@@ -1,4 +1,4 @@
-import { EllipsisVertical } from "lucide-react";
+import { IconDotsVertical } from "@tabler/icons-react";
 import { Button } from "../../ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import {
@@ -105,7 +105,7 @@ export function Options() {
             <DialogTrigger
               render={
                 <Button variant={"ghost"} size={"icon-sm"}>
-                  <EllipsisVertical />
+                  <IconDotsVertical />
                 </Button>
               }
             />

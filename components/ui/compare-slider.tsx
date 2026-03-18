@@ -2,11 +2,11 @@
 
 import * as SlotPrimitive from "@radix-ui/react-slot";
 import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronUpIcon,
-} from "lucide-react";
+  IconChevronDown,
+  IconChevronLeft,
+  IconChevronRight,
+  IconChevronUp,
+} from "@tabler/icons-react";
 import * as React from "react";
 import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
@@ -435,13 +435,13 @@ function CompareSliderHandle(props: DivProps) {
             <div className="z-50 flex aspect-square size-11 shrink-0 items-center justify-center rounded-full bg-background p-2 [&_svg]:size-4 [&_svg]:select-none [&_svg]:stroke-3 [&_svg]:text-muted-foreground">
               {isVertical ? (
                 <div className="flex flex-col items-center">
-                  <ChevronUpIcon />
-                  <ChevronDownIcon />
+                  <IconChevronUp />
+                  <IconChevronDown />
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <ChevronLeftIcon />
-                  <ChevronRightIcon />
+                  <IconChevronLeft />
+                  <IconChevronRight />
                 </div>
               )}
             </div>

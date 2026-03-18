@@ -1,5 +1,5 @@
 "use client";
-import { Moon, Sun } from "lucide-react";
+import { IconMoon, IconSun } from "@tabler/icons-react";
 import { Button } from "./button";
 import { useTheme } from "next-themes";
 
@@ -10,7 +10,7 @@ export function ToggleThemeButton() {
   }
   return (
     <Button variant={"ghost"} size={"icon-sm"} onClick={toggleTheme}>
-      {resolvedTheme == "light" ? <Moon /> : <Sun />}
+      {resolvedTheme == "light" ? <IconMoon /> : <IconSun />}
     </Button>
   );
 }

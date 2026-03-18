@@ -1,4 +1,4 @@
-import { Book, Sunset, Trees, Zap } from "lucide-react";
+import { IconBook, IconSunset, IconTrees, IconBolt } from "@tabler/icons-react";
 import { NavbarProps } from "./interfaces";
 
 export const data: NavbarProps = {
@@ -18,28 +18,28 @@ export const data: NavbarProps = {
           title: "First tool",
           description:
             "Some amazing tool that I will manage to develop later.",
-          icon: <Book className="size-5 shrink-0" />,
+          icon: <IconBook className="size-5 shrink-0" />,
           url: "#",
         },
         {
           title: "Second tool",
           description:
             "Another amazing tool that I will try to develop later.",
-          icon: <Trees className="size-5 shrink-0" />,
+          icon: <IconTrees className="size-5 shrink-0" />,
           url: "#",
         },
         {
           title: "Third tool",
           description:
             "Just another amazing tool that Im definely going to develop later.",
-          icon: <Sunset className="size-5 shrink-0" />,
+          icon: <IconSunset className="size-5 shrink-0" />,
           url: "#",
         },
         {
           title: "Fourth tool",
           description:
             "Another amazing tool that I will manage to develop later.",
-          icon: <Zap className="size-5 shrink-0" />,
+          icon: <IconBolt className="size-5 shrink-0" />,
           url: "#",
         },
       ],

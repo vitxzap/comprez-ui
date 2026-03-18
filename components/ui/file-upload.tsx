@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  FileArchiveIcon,
-  FileAudioIcon,
-  FileCodeIcon,
-  FileCogIcon,
-  FileIcon,
-  FileTextIcon,
-  FileVideoIcon,
-} from "lucide-react";
+  IconVideo,
+  IconFileMusic,
+  IconFile,
+  IconFileText,
+  IconFileCode,
+  IconFileAnalytics,
+  IconFilePower
+} from "@tabler/icons-react";
 import { DirectionProvider, useDirection } from "@radix-ui/react-direction";
 import * as SlotPrimitive from "@radix-ui/react-slot";
 import * as React from "react";
@@ -39,18 +39,18 @@ function getFileIcon(file: File) {
   const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
 
   if (type.startsWith("video/")) {
-    return <FileVideoIcon />;
+    return <IconFile />;
   }
 
   if (type.startsWith("audio/")) {
-    return <FileAudioIcon />;
+    return <IconFileMusic />;
   }
 
   if (
     type.startsWith("text/") ||
     ["txt", "md", "rtf", "pdf"].includes(extension)
   ) {
-    return <FileTextIcon />;
+    return <IconFileText />;
   }
 
   if (
@@ -72,21 +72,21 @@ function getFileIcon(file: File) {
       "cs",
     ].includes(extension)
   ) {
-    return <FileCodeIcon />;
+    return <IconFileCode />;
   }
 
   if (["zip", "rar", "7z", "tar", "gz", "bz2"].includes(extension)) {
-    return <FileArchiveIcon />;
+    return <IconFileAnalytics />;
   }
 
   if (
     ["exe", "msi", "app", "apk", "deb", "rpm"].includes(extension) ||
     type.startsWith("application/")
   ) {
-    return <FileCogIcon />;
+    return <IconFilePower />;
   }
 
-  return <FileIcon />;
+  return <IconFile />;
 }
 
 type Direction = "ltr" | "rtl";
@@ -1034,9 +1034,8 @@ function FileUploadItem(props: FileUploadItemProps) {
         id={id}
         aria-setsize={fileCount}
         aria-posinset={fileIndex}
-        aria-describedby={`${nameId} ${sizeId} ${statusId} ${
-          fileState.error ? messageId : ""
-        }`}
+        aria-describedby={`${nameId} ${sizeId} ${statusId} ${fileState.error ? messageId : ""
+          }`}
         aria-labelledby={nameId}
         data-slot="file-upload-item"
         dir={context.dir}
