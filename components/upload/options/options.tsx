@@ -22,7 +22,6 @@ import {
   type BasicFormType,
   basicSchema,
 } from "./validation";
-import SharedSubmitButton from "./submit.button";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -71,7 +70,7 @@ const BasicOptions = dynamic(() => import("./basic.form"), {
 export function Options() {
   //Toggles between advanced form usage
   const [useAdvancedOptions, setUseAdvancedOptiopns] = useState<boolean>(false);
-
+  const [open, setOpen] = useState<boolean>(false)
   const basicOptions = useForm<BasicFormType>({
     resolver: zodResolver(basicSchema),
     defaultValues: {
@@ -96,9 +95,19 @@ export function Options() {
   const activeForm = (
     useAdvancedOptions ? advancedOptions : basicOptions
   ) as UseFormReturn<BasicFormType | AdvancedFormType>;
-
+  function onSubmit(data: AdvancedFormType | BasicFormType) {
+    //Closes the dialog only if the form is valid
+    setOpen(!open)
+    if (useAdvancedOptions) {
+      const advancedOptionsData = data as AdvancedFormType
+      console.log("advanced form: ", advancedOptionsData)
+      return;
+    }
+    const basicOptionsData = data as BasicFormType
+    console.log("basic form: ", basicOptionsData)
+  }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip>
         <TooltipTrigger
           render={
@@ -142,12 +151,14 @@ export function Options() {
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant={"ghost"} className="flex-1">
+                <Button variant={"destructive"} onClick={() => {
+                  activeForm.reset()
+                }}>
                   Cancel
                 </Button>
               }
             />
-            <SharedSubmitButton isAdvancedForm={useAdvancedOptions} />
+            <Button type="submit" className='flex-1' onClick={activeForm.handleSubmit(onSubmit)}>Save</Button>
           </DialogFooter>
         </FormProvider>
       </DialogContent>

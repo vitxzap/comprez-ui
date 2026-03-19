@@ -47,6 +47,8 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { authClient } from "@/lib/auth/auth-client";
+import { createAnonymousSession } from "@/lib/dal/anonymous";
 
 export default function UploadDropzone() {
   const [file, setFile] = useState<File[]>([]);
@@ -54,6 +56,8 @@ export default function UploadDropzone() {
   const [compressedPreview, setCompressedPreview] = useState<string | null>(
     null,
   );
+  const session = authClient.useSession()
+
   const renderThumbnail = (file: File): void => {
     if (file) {
       // Create an object based on file
@@ -102,6 +106,10 @@ export default function UploadDropzone() {
   function onFileAccept(file: File) {
     renderThumbnail(file);
     console.log("file accepted");
+  }
+  async function handleFileSubmit() {
+    await createAnonymousSession(session)
+    
   }
   return (
     <FileUpload
@@ -226,9 +234,7 @@ export default function UploadDropzone() {
         <Options />
 
         <Button
-          onClick={() => {
-            console.log(file);
-          }}
+          onClick={handleFileSubmit}
         >
           Compress
         </Button>
