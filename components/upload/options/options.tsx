@@ -11,19 +11,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../ui/dialog";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  advancedFormDefaultValues,
   AdvancedFormType,
   advancedSchema,
+  basicFormDefaultValues,
   type BasicFormType,
   basicSchema,
 } from "./validation";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useOptionsFormStore } from "./form.store";
 
 // Using dynamic imports to improve performance
 const AdvancedOptions = dynamic(() => import("./advanced.form"), {
@@ -68,44 +71,58 @@ const BasicOptions = dynamic(() => import("./basic.form"), {
 });
 
 export function Options() {
-  //Toggles between advanced form usage
-  const [useAdvancedOptions, setUseAdvancedOptiopns] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false)
+  // Toggles between advanced and basic option sets
+  const [useAdvancedOptions, setUseAdvancedOptions] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  // Select only the setter functions from the store so the component doesn’t rerender
+  // each time other store values change.
+  const setForm = useOptionsFormStore((state) => state.setForm);
+  const setBasicFormData = useOptionsFormStore(
+    (state) => state.setBasicFormData,
+  );
+  const setAdvancedFormData = useOptionsFormStore(
+    (state) => state.setAdvancedFormData,
+  );
+
   const basicOptions = useForm<BasicFormType>({
     resolver: zodResolver(basicSchema),
-    defaultValues: {
-      preset: "medium",
-      outputExt: "Same as input",
-    },
+    defaultValues: basicFormDefaultValues,
   });
   const advancedOptions = useForm<AdvancedFormType>({
     resolver: zodResolver(advancedSchema),
-    defaultValues: {
-      audioBitrate: 96,
-      codecs: {
-        audio: "AAC",
-        video: "H.264",
-      },
-      crf: 23,
-      outputExt: "Same as input",
-      removeAudio: false,
-    },
+    defaultValues: advancedFormDefaultValues,
   });
+
   // Stores the current selected form methods
   const activeForm = (
     useAdvancedOptions ? advancedOptions : basicOptions
   ) as UseFormReturn<BasicFormType | AdvancedFormType>;
-  function onSubmit(data: AdvancedFormType | BasicFormType) {
-    //Closes the dialog only if the form is valid
-    setOpen(!open)
-    if (useAdvancedOptions) {
-      const advancedOptionsData = data as AdvancedFormType
-      console.log("advanced form: ", advancedOptionsData)
-      return;
-    }
-    const basicOptionsData = data as BasicFormType
-    console.log("basic form: ", basicOptionsData)
-  }
+
+  const onSubmit = useCallback(
+    (data: BasicFormType | AdvancedFormType) => {
+      // Close the dialog when the form is submitted
+      setOpen(false);
+
+      if (useAdvancedOptions) {
+        setAdvancedFormData(data as AdvancedFormType);
+        setForm("advanced");
+        return;
+      }
+
+      setBasicFormData(data as BasicFormType);
+      setForm("basic");
+    },
+    [useAdvancedOptions, setAdvancedFormData, setBasicFormData, setForm],
+  );
+
+  const toggleAdvancedOptions = useCallback(() => {
+    setUseAdvancedOptions((prev) => {
+      setForm(prev ? "basic" : "advanced");
+      return !prev;
+    });
+  }, [setForm]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -137,7 +154,7 @@ export function Options() {
                 <Switch
                   id="advanced options"
                   checked={useAdvancedOptions}
-                  onCheckedChange={setUseAdvancedOptiopns}
+                  onCheckedChange={toggleAdvancedOptions}
                 />
               </div>
             </div>
@@ -151,9 +168,7 @@ export function Options() {
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant={"destructive"} onClick={() => {
-                  activeForm.reset()
-                }}>
+                <Button variant={"destructive"} onClick={() => activeForm.reset()}>
                   Cancel
                 </Button>
               }

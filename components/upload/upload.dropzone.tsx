@@ -56,7 +56,7 @@ export default function UploadDropzone() {
   const [compressedPreview, setCompressedPreview] = useState<string | null>(
     null,
   );
-  const cookieSession = authClient.useSession()
+  const cookieSession = authClient.useSession();
 
   const renderThumbnail = (file: File): void => {
     if (file) {
@@ -109,7 +109,7 @@ export default function UploadDropzone() {
   }
   async function handleFileSubmit() {
     await createAnonymousSession(cookieSession)
-
+    
   }
   return (
     <FileUpload

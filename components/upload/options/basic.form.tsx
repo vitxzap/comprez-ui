@@ -92,7 +92,7 @@ export default function BasicOptions() {
                 </SelectContent>
               </Select>
               <FieldDescription>
-                Choose your output file extension. If you don't choose one, it
+                Choose your output file extension. If you don&apos;t choose one, it
                 will be the same as the input.
               </FieldDescription>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

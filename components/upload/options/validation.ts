@@ -19,7 +19,6 @@ export const basicSchema = z.object({
     preset: z.enum(presets.map((preset) => preset.value)),
     outputExt: z.enum(["Same as input", "mp4", "avi", "ogg", "webm"]),
 });
-export type BasicFormType = z.infer<typeof basicSchema>;
 
 export const advancedSchema = basicSchema.extend({
     removeAudio: z.boolean(),
@@ -36,4 +35,22 @@ export const advancedSchema = basicSchema.extend({
 }).omit({
     preset: true
 })
+
+export type BasicFormType = z.infer<typeof basicSchema>;
 export type AdvancedFormType = z.infer<typeof advancedSchema>
+export type Forms = 'basic' | 'advanced'
+
+export const advancedFormDefaultValues: AdvancedFormType = {
+    audioBitrate: 96,
+    codecs: {
+        audio: "AAC",
+        video: "H.264",
+    },
+    crf: 23,
+    outputExt: "Same as input",
+    removeAudio: false,
+}
+export const basicFormDefaultValues: BasicFormType = {
+    preset: "medium",
+    outputExt: "Same as input",
+}  
