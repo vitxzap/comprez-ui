@@ -49,6 +49,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { authClient } from "@/lib/auth/auth-client";
 import { createAnonymousSession } from "@/lib/dal/anonymous";
+import { requestApiUpload } from "./api";
+import { useFileStore } from "./file.store";
 
 export default function UploadDropzone() {
   const [file, setFile] = useState<File[]>([]);
@@ -56,6 +58,8 @@ export default function UploadDropzone() {
   const [compressedPreview, setCompressedPreview] = useState<string | null>(
     null,
   );
+  const setFileStore = useFileStore((state) => state.setFile)
+  const resetFileStore = useFileStore((state) => state.reset)
   const cookieSession = authClient.useSession();
 
   const renderThumbnail = (file: File): void => {
@@ -96,22 +100,27 @@ export default function UploadDropzone() {
       };
     }
   };
+
   function cleanPreviewStates() {
     setPreview(null);
     setCompressedPreview(null);
+    resetFileStore()
   }
   function onFileReject(file: File, message: string) {
     console.log("file rejected", message);
   }
-  function onFileAccept(file: File) {
-    renderThumbnail(file);
+  function onFileAccept(uploadedFile: File) {
+    renderThumbnail(uploadedFile);
     console.log("file accepted");
+
   }
   async function handleFileSubmit() {
     //Before sending the file it will create a new anonymous session only if the user doesnt have one
     await createAnonymousSession(cookieSession)
-    
-
+    setFileStore(file[0])
+    if (file.length > 0) {
+      const currentFile = file[0]
+    }
   }
   return (
     <FileUpload

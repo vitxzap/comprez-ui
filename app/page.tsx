@@ -1,6 +1,6 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { CompressionDetails } from "@/components/compression-details/compression-details";
 import { Label } from "@/components/ui/label";
-import UploadDropzone from "@/components/upload/upload.dropzone";
+import { UploadCard } from "@/components/upload/upload.card";
 
 export default function Home() {
   return (
@@ -11,11 +11,11 @@ export default function Home() {
           Compress all you want, for all you need.
         </Label>
       </div>
-      <Card className="w-1/2 h-max">
-        <CardContent>
-          <UploadDropzone />
-        </CardContent>
-      </Card>
+      <div className="w-1/2 gap-2 flex flex-col">
+        <UploadCard />
+        <CompressionDetails />
+      </div>
+
     </div>
   );
 }

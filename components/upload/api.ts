@@ -1,7 +1,17 @@
 
+import axios from "axios"
 interface RequestApiUpload {
     filename: string
-    mimetype: "video/mp4" | "video/ogg"
+    mimetype: string
 }
-export function requestApiUpload({ filename, mimetype }: RequestApiUpload) {
+export async function requestApiUpload({ filename, mimetype }: RequestApiUpload) {
+    "use client"
+    const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/v1/compressor/request-upload`, {
+        filename: filename,
+        mimetype: mimetype
+    }, {
+        withCredentials: true
+    })
+    console.log(result)
+    return result.status;
 }

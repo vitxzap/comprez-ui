@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  IconVideo,
   IconFileMusic,
   IconFile,
   IconFileText,
@@ -9,7 +8,7 @@ import {
   IconFileAnalytics,
   IconFilePower
 } from "@tabler/icons-react";
-import { DirectionProvider, useDirection } from "@radix-ui/react-direction";
+import { useDirection } from "@radix-ui/react-direction";
 import * as SlotPrimitive from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "@/lib/utils";
@@ -27,7 +26,7 @@ const ITEM_PROGRESS_NAME = "FileUploadItemProgress";
 const ITEM_DELETE_NAME = "FileUploadItemDelete";
 const CLEAR_NAME = "FileUploadClear";
 
-function formatBytes(bytes: number) {
+export function formatBytes(bytes: number) {
   if (bytes === 0) return "0 B";
   const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
