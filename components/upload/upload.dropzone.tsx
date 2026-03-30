@@ -108,8 +108,10 @@ export default function UploadDropzone() {
     console.log("file accepted");
   }
   async function handleFileSubmit() {
+    //Before sending the file it will create a new anonymous session only if the user doesnt have one
     await createAnonymousSession(cookieSession)
     
+
   }
   return (
     <FileUpload
